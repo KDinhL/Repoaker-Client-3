@@ -1,0 +1,32 @@
+@import '../../styles/partials/typography';
+@import '../../styles/partials/mixins.scss';
+@import '../../styles/partials/variables.scss';
+
+
+
+.PL {
+  &__project-table {
+    border-collapse: collapse;
+    width: 100%;
+
+    th,
+    td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: center;
+      background-color: $primary-color-3;
+
+
+      &:last-child {
+        width: fit-content;
+        align-items: center;
+        background-color: $primary-color-3;
+
+      }
+    }
+
+    th {
+      background-color: $primary-color-3;
+    }
+  }
+}
