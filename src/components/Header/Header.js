@@ -6,14 +6,14 @@ import User from "../../assets/images/user.png";
 
 export default function Header() {
     // Retrieve the logged-in username from local storage
-    const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+    const loggedInUsername = JSON.parse(localStorage.getItem("loggedInUsername"));
     const navigate = useNavigate();
     const location = useLocation();
 
     // Function to handle sign-out
     const handleSignOut = () => {
         // Clear the username from local storage
-        localStorage.removeItem("loggedInUser");
+        localStorage.removeItem("loggedInUsername");
 
         // Redirect to the login page
         navigate("/");
@@ -29,10 +29,10 @@ export default function Header() {
                     <img className="header__logo-image" src={Logo} alt="Logo" />
                 </Link>
             </div>
-            {loggedInUser && location.pathname !== "/" && (
+            {loggedInUsername && location.pathname !== "/" && (
                 // Render user information and sign-out button only if logged in and not on the login page
                 <div className="header__user-icon">
-                    <p>{loggedInUser.username}</p>
+                    <p>{loggedInUsername.username}</p>
                     <img src={User} alt="User Icon" className="header__user-icon--image" />
                     <button className="header__sign-out-button" onClick={handleSignOut}>
                         Sign Out
