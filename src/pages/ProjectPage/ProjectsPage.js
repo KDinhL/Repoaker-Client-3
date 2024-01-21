@@ -4,8 +4,10 @@ import ProjectList from "../../components/ProjectList/ProjectList";
 import "./ProjectsPage.scss";
 import AddProject from "../../components/AddProject/AddProject";
 import axios from "axios";
+// eslint-disable-next-line
 import { urlAllProjects } from "../../utils/api-utils";
 import Modal from "react-modal";
+import { urlProjectsByUser } from "../../utils/api-utils"; // Update the import
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState([]);
@@ -13,13 +15,17 @@ export default function ProjectsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
+    const loggedInUsername = localStorage.getItem("loggedInUsername");
+    console.log("Logged In Username:", loggedInUsername);
+
     fetchProjects();
   }, []);
 
   const fetchProjects = async () => {
     try {
-      const url = urlAllProjects();
+      const url = urlProjectsByUser();
       const response = await axios.get(url);
+      console.log("Fetched projects:", response.data);
       setProjects(response.data);
     } catch (error) {
       console.error("Error fetching projects:", error);

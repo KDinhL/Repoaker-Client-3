@@ -108,10 +108,11 @@ const newUser = response.data.user;
                     console.log('Logged in successfully:', user);
 
                     // Simulating a successful login
+                    // eslint-disable-next-line
                     const loggedInUsername = username;
 
                     // Save the username in local storage
-                    localStorage.setItem('loggedInUsername', loggedInUsername);
+                    localStorage.setItem('loggedInUser', JSON.stringify(user));
 
                     window.location.href = '/main';
                 } else {

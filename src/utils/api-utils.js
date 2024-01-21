@@ -1,7 +1,10 @@
 const url = process.env.REACT_APP_BASE_URL;
 
-export const urlAllProjects = () => {
-  return `${url}/api/projects`;
+export const urlAllProjects = (username) => {
+  // Include username in the URL for filtering projects
+  return username
+    ? `${url}/api/projects/user/${username}`
+    : `${url}/api/projects`;
 };
 
 export const urlProjectById = (id) => {
@@ -30,4 +33,10 @@ export const urlSignUp = () => {
 
 export const urlLogin = () => {
   return `${url}/api/auth/login`;
+};
+
+export const urlProjectsByUser = () => {
+  // Use this function to fetch projects specific to the logged-in user
+  const loggedInUsername = localStorage.getItem("loggedInUsername");
+  return urlAllProjects(loggedInUsername);
 };

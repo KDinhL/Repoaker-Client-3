@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+// eslint-disable-next-line
 import { urlAllProjects } from "../../utils/api-utils";
 import "./ProjectList.scss";
 import DeleteProject from "../DeleteProject/DeleteProject";
 import "../DeleteProject/DeleteProject.scss";
 import EditProject from "../EditPoject/EditProject";
+import { urlProjectsByUser } from "../../utils/api-utils"; // Update the import
+
 export default function ProjectList({ onProjectClick }) {
   const [projects, setProjects] = useState([]);
 
@@ -15,7 +18,7 @@ export default function ProjectList({ onProjectClick }) {
 
   const fetchProjects = async () => {
     try {
-      const url = urlAllProjects();
+      const url = urlProjectsByUser();
       const response = await axios.get(url);
       setProjects(response.data);
     } catch (error) {
