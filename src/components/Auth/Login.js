@@ -113,6 +113,8 @@ const newUser = response.data.user;
 
                     // Save the username in local storage
                     localStorage.setItem('loggedInUser', JSON.stringify(user));
+                    console.log('loggedInUser:', JSON.parse(localStorage.getItem('loggedInUser')));
+                    debugger;
 
                     window.location.href = '/main';
                 } else {
