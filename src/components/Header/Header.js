@@ -6,7 +6,7 @@ import User from "../../assets/images/user.png";
 
 export default function Header() {
     // Retrieve the logged-in username from local storage
-    const loggedInUsername = JSON.parse(localStorage.getItem("loggedInUsername"));
+    const loggedInUsername = localStorage.getItem("loggedInUsername");
     const navigate = useNavigate();
     const location = useLocation();
 
