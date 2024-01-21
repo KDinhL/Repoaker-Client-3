@@ -116,7 +116,7 @@ const newUser = response.data.user;
                     console.log('loggedInUser:', JSON.parse(localStorage.getItem('loggedInUser')));
                     debugger;
 
-                    window.location.href = '/main';
+                    // window.location.href = '/main';
                 } else {
                     setError(message);
                 }
