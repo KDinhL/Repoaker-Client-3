@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+// eslint-disable-next-line
 import { urlAllProjects, urlProjectTasks } from "../../utils/api-utils";
 import "./AllReportPage.scss";
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Label } from "recharts";
+import { urlProjectsByUser } from "../../utils/api-utils"; // Update the import
 
 export default function AllReportPage() {
   const [projects, setProjects] = useState([]);
@@ -13,7 +15,7 @@ export default function AllReportPage() {
 
   const fetchProjects = async () => {
     try {
-      const response = await axios.get(urlAllProjects());
+      const response = await axios.get(urlProjectsByUser());
       const projectData = response.data;
 
       // Fetch project tasks for each project

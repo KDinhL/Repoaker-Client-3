@@ -1,9 +1,10 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect  } from "react";
 // eslint-disable-next-line
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { urlAllProjects } from "../../utils/api-utils";
+// eslint-disable-next-line
+import { urlAllProjects, urlProjectsByUser } from "../../utils/api-utils"; // Import the new API utility
 import "./AddProject.scss";
 
 function AddProject({ onProjectAdded, closeModal }) {
@@ -27,6 +28,17 @@ function AddProject({ onProjectAdded, closeModal }) {
     setInputValidity({ ...inputValidity, [name]: true });
   };
   const [deadlineError, setDeadlineError] = useState(false);
+
+  useEffect(() => {
+    // Fetch the logged-in username from localStorage
+    const loggedInUsername = localStorage.getItem("loggedInUsername");
+
+    // Update the project_data with the logged-in username
+    setProjectData((prevData) => ({
+      ...prevData,
+      project_user: loggedInUsername,
+    }));
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

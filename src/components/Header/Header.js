@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import "./Header.scss";
 import Logo from "../../assets/logo/logo.png";
 import User from "../../assets/images/user.png";
@@ -7,6 +7,8 @@ import User from "../../assets/images/user.png";
 export default function Header() {
     // Retrieve the logged-in username from local storage
     const loggedInUsername = localStorage.getItem("loggedInUsername");
+    const navigate = useNavigate();
+    const location = useLocation();
 
     // Function to handle sign-out
     const handleSignOut = () => {
@@ -14,7 +16,7 @@ export default function Header() {
         localStorage.removeItem("loggedInUsername");
 
         // Redirect to the login page
-        window.location.href = "/";
+        navigate("/");
     };
 
     return (
@@ -27,15 +29,16 @@ export default function Header() {
                     <img className="header__logo-image" src={Logo} alt="Logo" />
                 </Link>
             </div>
-            <div className="header__user-icon">
-                <p>{loggedInUsername || "User Name"}</p>
-                <img src={User} alt="User Icon" className="header__user-icon--image" />
-                {loggedInUsername && (
+            {loggedInUsername && location.pathname !== "/" && (
+                // Render user information and sign-out button only if logged in and not on the login page
+                <div className="header__user-icon">
+                    <p>{loggedInUsername}</p>
+                    <img src={User} alt="User Icon" className="header__user-icon--image" />
                     <button className="header__sign-out-button" onClick={handleSignOut}>
                         Sign Out
                     </button>
-                )}
-            </div>
+                </div>
+            )}
         </header>
     );
 }

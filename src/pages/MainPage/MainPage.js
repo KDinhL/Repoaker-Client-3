@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import User from "../../assets/images/user.png";
+// eslint-disable-next-line
 import { urlAllProjects } from "../../utils/api-utils";
 import "./MainPage.scss";
 // eslint-disable-next-line
 import Calendar from "../../components/Calendar/Calendar";
+import { urlProjectsByUser } from "../../utils/api-utils"; // Update the import
 
 export default function MainPage() {
     const [showAdditionalButtons, setShowAdditionalButtons] = useState(false);
@@ -23,8 +25,13 @@ const [displayAllProjects, setDisplayAllProjects] = useState(false);
 
     const fetchProjects = async () => {
         try {
-            const url = urlAllProjects();
+            const loggedInUsername = localStorage.getItem("loggedInUsername");
+            console.log("Logged In Username:", loggedInUsername); // Log the username for debugging
+    
+            const url = urlProjectsByUser();
             const response = await axios.get(url);
+            console.log("Fetched projects:", response.data); // Add this line for debugging
+
             setProjects(response.data);
         } catch (error) {
             console.error("Error fetching projects:", error);
