@@ -112,8 +112,7 @@ const Login = ({ history }) => {
                     const loggedInUsername = username;
 
                     // Save the username in local storage
-                    localStorage.setItem('loggedInUser', JSON.stringify(user));
-                    console.log('loggedInUser:', JSON.parse(localStorage.getItem('loggedInUser')));
+                    localStorage.setItem('loggedInUsername', user.username);
                     // debugger;
 
                     // window.location.href = '/main';
