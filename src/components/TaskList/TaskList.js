@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+// eslint-disable-next-line
 import {
   urlProjectTasks,
   urlAllProjects,
+  urlProjectsByUser,
   urlProjectById,
   urlTaskById,
 } from "../../utils/api-utils"; 
@@ -31,7 +33,7 @@ export default function TaskList({ project_deadline ,project_start_date ,onEdit,
 
   const fetchProjects = async () => {
     try {
-      const url = urlAllProjects();
+      const url = urlProjectsByUser();
       const response = await axios.get(url);
       setProjects(response.data);
     } catch (error) {
