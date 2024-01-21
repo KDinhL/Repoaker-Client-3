@@ -12,15 +12,15 @@ const Login = ({ history }) => {
     const [password, setPassword] = useState('');
 
     // eslint-disable-next-line
-const [isAboutAppModalOpen, setAboutAppModalOpen] = useState(false);
+    const [isAboutAppModalOpen, setAboutAppModalOpen] = useState(false);
 
     // eslint-disable-next-line
-const openAboutAppModal = () => {
+    const openAboutAppModal = () => {
         setAboutAppModalOpen(true);
     };
 
     // eslint-disable-next-line
-const closeAboutAppModal = () => {
+    const closeAboutAppModal = () => {
         setAboutAppModalOpen(false);
     };
 
@@ -78,7 +78,7 @@ const closeAboutAppModal = () => {
 
                 // Assuming the server responds with the newly created user data
                 // eslint-disable-next-line
-const newUser = response.data.user;
+                const newUser = response.data.user;
 
                 // Close the signup modal
                 setShowSignUpModal(false);
@@ -114,7 +114,7 @@ const newUser = response.data.user;
                     // Save the username in local storage
                     localStorage.setItem('loggedInUser', JSON.stringify(user));
                     console.log('loggedInUser:', JSON.parse(localStorage.getItem('loggedInUser')));
-                    debugger;
+                    // debugger;
 
                     // window.location.href = '/main';
                 } else {
@@ -148,7 +148,7 @@ const newUser = response.data.user;
                 onKeyPress={handleKeyPress}
             />
             {error && <p className="error">{error}</p>}
-            <Link to="#" onClick={(e) => {
+            {/* <Link to="#" onClick={(e) => {
                 if (error) {
                     e.preventDefault();
                     console.log('Error during login. Cannot proceed to the next page.');
@@ -157,8 +157,10 @@ const newUser = response.data.user;
                 }
             }}>
                 <button onClick={handleLogin}>Log In</button>
+            </Link> */}
+            <Link to={error ? '#' : '/main'}>
+                <button onClick={error ? (e) => e.preventDefault() : handleLogin}>Log In</button>
             </Link>
-
             <p>
                 Don't have an account?{' '}
                 <span onClick={() => setShowSignUpModal(true)}>Sign Up</span>
