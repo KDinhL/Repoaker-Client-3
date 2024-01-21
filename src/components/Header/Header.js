@@ -32,7 +32,7 @@ export default function Header() {
             {loggedInUsername && location.pathname !== "/" && (
                 // Render user information and sign-out button only if logged in and not on the login page
                 <div className="header__user-icon">
-                    <p>{loggedInUsername.username}</p>
+                    <p>{loggedInUsername}</p>
                     <img src={User} alt="User Icon" className="header__user-icon--image" />
                     <button className="header__sign-out-button" onClick={handleSignOut}>
                         Sign Out
