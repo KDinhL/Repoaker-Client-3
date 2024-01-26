@@ -21,8 +21,8 @@ export default function ProjectDetails() {
   useEffect(() => {
     fetchProjectData();
     fetchProjectTasks();
-  // eslint-disable-next-line
-}, [projectId]);
+    // eslint-disable-next-line
+  }, [projectId]);
 
   const fetchProjectData = async () => {
     try {
@@ -43,7 +43,7 @@ export default function ProjectDetails() {
   };
 
   // eslint-disable-next-line
-const COLORS = ["#158463", "#BDC5D5"];
+  const COLORS = ["#158463", "#BDC5D5"];
   const RADIAN = Math.PI / 180;
 
   const renderPieChart = () => {
@@ -87,7 +87,7 @@ const COLORS = ["#158463", "#BDC5D5"];
 
 
   // eslint-disable-next-line
-const renderCustomPieLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
+  const renderCustomPieLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
@@ -115,7 +115,7 @@ const renderCustomPieLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, perc
     }));
 
     // eslint-disable-next-line
-const isAnyTaskInProcessOrDrop = tasks.some(task => task.task_status === "in-process" || task.task_status === "drop");
+    const isAnyTaskInProcessOrDrop = tasks.some(task => task.task_status === "in-process" || task.task_status === "drop");
 
     const supportingColor = "#158463"; // Define the supporting color directly here
 
@@ -162,15 +162,15 @@ const isAnyTaskInProcessOrDrop = tasks.some(task => task.task_status === "in-pro
       </div>
       <div className="ProjectDetails__tasks">
         <h3>Projects Details</h3>
-        <p>
+        <ul>
           {tasks.map(task => (
-<p key={task.id}>
-    {/* eslint-disable-next-line */}
+            <li key={task.id}>
+              {/* eslint-disable-next-line */}
               <a>{task.task_name}</a>
               <p>Start Date: {task.task_start_date} | Deadline: {task.task_deadline}</p>
-            </p>
+            </li>
           ))}
-        </p>
+        </ul>
       </div>
     </div>
   );

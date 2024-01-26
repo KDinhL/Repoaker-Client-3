@@ -5,6 +5,8 @@ import interactionPlugin from '@fullcalendar/interaction';
 import Modal from 'react-modal';
 import './Calendar.scss';
 import { urlAllTasks } from '../../utils/api-utils';
+import { urlProjectsByUser } from "../../utils/api-utils"; // Update the import
+import { urlProjectTasks } from "../../utils/api-utils"; // Update the import
 
 function Calendar() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,7 +19,7 @@ function Calendar() {
   const [calendarEvents, setCalendarEvents] = useState([]);
   const selectedTaskId = parseInt(selectedTask, 10);
   // eslint-disable-next-line
-const selectedTaskObject = tasks.find((task) => task.task_id === selectedTaskId);
+  const selectedTaskObject = tasks.find((task) => task.task_id === selectedTaskId);
   const openModal = (date) => {
     setSelectedDate(date);
     setIsModalOpen(true);
@@ -39,40 +41,40 @@ const selectedTaskObject = tasks.find((task) => task.task_id === selectedTaskId)
   const handleConfirmClick = () => {
     console.log('Confirm button clicked');
     console.log('Selected Task:', selectedTask);
-  
+
     if (selectedTask) {
       const selectedTaskId = parseInt(selectedTask, 10);
       const selectedTaskObject = tasks.find((task) => task.task_id === selectedTaskId);
-  
+
       if (selectedTaskObject) {
         // Create a new Date object for the selected time
         const selectedTime = new Date(selectedDate);
         selectedTime.setHours(selectedAmPm === 'PM' ? parseInt(selectedHour, 10) + 12 : parseInt(selectedHour, 10));
         selectedTime.setMinutes(parseInt(selectedMinute, 10));
-  
+
         // Format the time as HH:MM AM/PM
         // eslint-disable-next-line
-const formattedTime = selectedTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  
+        const formattedTime = selectedTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
         // Calculate the task duration in days
         const taskDurationInDays = Math.ceil((new Date(selectedTaskObject.task_deadline) - selectedTime) / (24 * 60 * 60 * 1000));
-  
+
         // Create an array of events for each day of the task duration
         const taskEvents = Array.from({ length: taskDurationInDays }, (_, index) => {
           const currentDay = new Date(selectedTime);
           currentDay.setDate(currentDay.getDate() + index);
-  
+
           const eventTitle =
             index === 0
               ? `${selectedTaskObject.task_description}; ${selectedTaskObject.task_start_date} to ${selectedTaskObject.task_deadline}`
               : '';
-  
+
           return {
             title: eventTitle,
             start: currentDay.toISOString(),
           };
         });
-  
+
         setCalendarEvents([...calendarEvents, ...taskEvents]);
         closeModal();
       } else {
@@ -82,25 +84,71 @@ const formattedTime = selectedTime.toLocaleTimeString([], { hour: '2-digit', min
       alert('Please select a task before confirming.');
     }
   };
-  
-  
+
+
 
   useEffect(() => {
     async function fetchTasks() {
+      //   try {
+      //     const response = await fetch(urlAllTasks());
+      //     if (response.ok) {
+      //       const data = await response.json();
+      //       setTasks(data);
+
+      //       // Extracting events for the calendar with different colors for each task
+      //       const events = data.map((task) => ({
+      //         title: `${task.task_description}; ${task.task_start_date} to ${task.task_deadline}`,
+      //         start: task.task_start_date, // Assuming task_start_date is a valid date format
+      //         end: task.task_deadline, // Assuming task_deadline is a valid date format
+      //         color: getRandomColor(), // Assign a color to each task
+      //       }));
+
+      //       setCalendarEvents(events);
+      //     } else {
+      //       console.error('Failed to fetch tasks.');
+      //     }
+      //   } catch (error) {
+      //     console.error('Error fetching tasks:', error);
+      //   }
+      // }
       try {
-        const response = await fetch(urlAllTasks());
-        if (response.ok) {
-          const data = await response.json();
-          setTasks(data);
-  
+        const loggedInUsername = localStorage.getItem("loggedInUsername");
+        let tasksResponse;
+
+        if (loggedInUsername === "admin") {
+          tasksResponse = await fetch(urlAllTasks());
+        } else {
+          const projectsResponse = await fetch(urlProjectsByUser());
+          if (projectsResponse.ok) {
+            const projectsData = await projectsResponse.json();
+
+            // Assuming you want to use the first project's ID
+            const selectedProjectId = projectsData.length > 0 ? projectsData[0].project_id : null;
+
+            if (selectedProjectId) {
+              tasksResponse = await fetch(urlProjectTasks(selectedProjectId));
+            } else {
+              console.error('No projects found.');
+              return;
+            }
+          } else {
+            console.error('Failed to fetch projects.');
+            return;
+          }
+        }
+
+        if (tasksResponse.ok) {
+          const tasksData = await tasksResponse.json();
+          setTasks(tasksData);
+
           // Extracting events for the calendar with different colors for each task
-          const events = data.map((task) => ({
+          const events = tasksData.map((task) => ({
             title: `${task.task_description}; ${task.task_start_date} to ${task.task_deadline}`,
             start: task.task_start_date, // Assuming task_start_date is a valid date format
             end: task.task_deadline, // Assuming task_deadline is a valid date format
             color: getRandomColor(), // Assign a color to each task
           }));
-  
+
           setCalendarEvents(events);
         } else {
           console.error('Failed to fetch tasks.');
@@ -109,7 +157,7 @@ const formattedTime = selectedTime.toLocaleTimeString([], { hour: '2-digit', min
         console.error('Error fetching tasks:', error);
       }
     }
-  
+    
     fetchTasks();
   }, []);
   function getRandomColor() {

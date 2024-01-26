@@ -16,11 +16,27 @@
       text-align: center;
       background-color: $primary-color-3;
 
+      .add-task-button {
+        padding: 5px 10px;
+        background-color: #158463;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 14px;
+        cursor: pointer;
+        margin: auto;
+
+        &:hover {
+          background-color: #136953;
+        }
+      }
 
       &:last-child {
         width: fit-content;
         align-items: center;
         background-color: $primary-color-3;
+        text-align: center;
+
 
       }
     }

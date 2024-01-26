@@ -15,9 +15,9 @@ export default function MainPage() {
     const [selectedProjectId, setSelectedProjectId] = useState("");
     const navigate = useNavigate();
     // eslint-disable-next-line
-const [error, setError] = useState(false);
+    const [error, setError] = useState(false);
     // eslint-disable-next-line
-const [displayAllProjects, setDisplayAllProjects] = useState(false);
+    const [displayAllProjects, setDisplayAllProjects] = useState(false);
 
     useEffect(() => {
         fetchProjects();
@@ -26,11 +26,18 @@ const [displayAllProjects, setDisplayAllProjects] = useState(false);
     const fetchProjects = async () => {
         try {
             const loggedInUsername = localStorage.getItem("loggedInUsername");
-            console.log("Logged In Username:", loggedInUsername); // Log the username for debugging
-    
-            const url = urlProjectsByUser();
+            // console.log("Logged In Username:", loggedInUsername); // Log the username for debugging
+            
+            let url; // Declare url variable outside of if-else blocks
+        
+            if (loggedInUsername === "admin") {
+              url = urlAllProjects(); // Use urlAllProjects for admin
+            } else {
+              url = urlProjectsByUser();
+            }
+        
             const response = await axios.get(url);
-            console.log("Fetched projects:", response.data); // Add this line for debugging
+            // console.log("Fetched projects:", response.data); // Add this line for debugging
 
             setProjects(response.data);
         } catch (error) {
