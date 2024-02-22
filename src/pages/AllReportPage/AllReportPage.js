@@ -15,9 +15,17 @@ export default function AllReportPage() {
 
   const fetchProjects = async () => {
     try {
-      const response = await axios.get(urlProjectsByUser());
+      const loggedInUsername = localStorage.getItem("loggedInUsername");
+      let response;
+  
+      if (loggedInUsername === "admin") {
+        response = await axios.get(urlAllProjects());
+      } else {
+        response = await axios.get(urlProjectsByUser());
+      }
+  
       const projectData = response.data;
-
+  
       // Fetch project tasks for each project
       const projectsWithTasks = await Promise.all(
         projectData.map(async (project) => {
@@ -25,7 +33,7 @@ export default function AllReportPage() {
           return { ...project, tasks: tasksResponse.data };
         })
       );
-
+  
       setProjects(projectsWithTasks);
     } catch (error) {
       console.error("Error fetching projects:", error);

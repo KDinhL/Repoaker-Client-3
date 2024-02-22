@@ -34,9 +34,17 @@ export default function TaskList({ project_deadline ,project_start_date ,onEdit,
 
   const fetchProjects = async () => {
     try {
-      const url = urlProjectsByUser();
-      const response = await axios.get(url);
-      setProjects(response.data);
+      const loggedInUsername = localStorage.getItem("loggedInUsername");
+      let response;
+  
+      if (loggedInUsername === "admin") {
+        response = await axios.get(urlAllProjects());
+        setProjects(response.data);
+      } else {
+        const url = urlProjectsByUser();
+        response = await axios.get(url);
+        setProjects(response.data);
+      }
     } catch (error) {
       console.error("Error fetching projects:", error);
     }
